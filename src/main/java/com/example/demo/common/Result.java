@@ -1,90 +1,65 @@
 package com.example.demo.common;
 
 /**
- * 统一响应结果类
- * 用于封装API接口的返回数据
+ * 统一返回前端的数据外壳
+ * 泛型载荷
+ * 
  * @param <T> 数据类型
  */
 public class Result<T> {
-    /**
-     * 状态码
-     */
-    private Integer code;
-
-    /**
-     * 提示信息
-     */
     private String msg;
-
-    /**
-     * 数据内容
-     */
+    private Integer code;
     private T data;
 
     /**
-     * 无参构造方法
-     */
-    public Result() {
-    }
-
-    /**
-     * 全参构造方法
-     * @param code 状态码
-     * @param msg 提示信息
-     * @param data 数据内容
-     */
-    public Result(Integer code, String msg, T data) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
-    }
-
-    /**
-     * 成功响应
-     * @param data 返回的数据
-     * @param <T> 数据类型
-     * @return 成功的结果对象
+     * 静态工厂方法:成功回调
+     * 
+     * @param data 成功时返回的数据载荷
+     * @param <T>  数据类型
+     * @return 统一响应结果
      */
     public static <T> Result<T> success(T data) {
-        return new Result<>(200, "操作成功", data);
+        Result<T> result = new Result<>();
+        result.code = ResultCode.SUCCESS.getCode();
+        result.msg = ResultCode.SUCCESS.getMsg();
+        result.data = data;
+        return result;
     }
 
     /**
-     * 成功响应（无数据）
-     * @return 成功的结果对象
+     * 静态工厂方法:失败回调
+     * 
+     * @param resultCode 业务错误枚举
+     * @param <T>        数据类型
+     * @return 统一响应结果
      */
-    public static Result<Void> success() {
-        return new Result<>(200, "操作成功", null);
+    public static <T> Result<T> error(ResultCode resultCode) {
+        Result<T> result = new Result<>();
+        result.code = resultCode.getCode();
+        result.msg = resultCode.getMsg();
+        result.data = null;
+        return result;
     }
 
     /**
-     * 失败响应
-     * @param code 错误码
-     * @param msg 错误信息
-     * @return 失败的结果对象
-     */
-    public static Result<Void> error(Integer code, String msg) {
-        return new Result<>(code, msg, null);
-    }
-
-    /**
-     * 获取状态码
-     * @return 状态码
-     */
-    public Integer getCode() {
-        return code;
-    }
-
-    /**
-     * 设置状态码
+     * 静态工厂方法:失败回调 (自定义错误码和信息)
+     * 
      * @param code 状态码
+     * @param msg  提示信息
+     * @param <T>  数据类型
+     * @return 统一响应结果
      */
-    public void setCode(Integer code) {
-        this.code = code;
+    public static <T> Result<T> error(Integer code, String msg) {
+        Result<T> result = new Result<>();
+        result.code = code;
+        result.msg = msg;
+        result.data = null;
+        return result;
     }
 
     /**
      * 获取提示信息
+     * 
      * @return 提示信息
      */
     public String getMsg() {
@@ -93,6 +68,7 @@ public class Result<T> {
 
     /**
      * 设置提示信息
+     * 
      * @param msg 提示信息
      */
     public void setMsg(String msg) {
@@ -100,7 +76,26 @@ public class Result<T> {
     }
 
     /**
+     * 获取状态码
+     * 
+     * @return 状态码
+     */
+    public Integer getCode() {
+        return code;
+    }
+
+    /**
+     * 设置状态码
+     * 
+     * @param code 状态码
+     */
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    /**
      * 获取数据内容
+     * 
      * @return 数据内容
      */
     public T getData() {
@@ -109,6 +104,7 @@ public class Result<T> {
 
     /**
      * 设置数据内容
+     * 
      * @param data 数据内容
      */
     public void setData(T data) {

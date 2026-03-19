@@ -19,7 +19,17 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public Result<String> getUser(@PathVariable("id") Long id) {
-        return Result.success("查询成功，正在返回 ID 为 " + id + " 的用户信息");
+        String data="查询成功,正在返回ID为"+id+"的用户信息"; 
+        return Result.success(data);
+    }
+
+    /**
+     * 6. 用户登录接口（测试用）
+     * @return 统一响应结果
+     */
+    @PostMapping("/login")
+    public Result<String> login() {
+        return Result.success("登录成功, 您的Token为: mock-token-123");
     }
 
     /**
