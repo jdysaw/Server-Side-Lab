@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: demo
+  datasource:
+    # 暂时使用 H2 内存数据库进行测试 (如有需要可取消注释)
+    # driver-class-name: org.h2.Driver
+    # url: jdbc:h2:mem:lab_db;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    # username: sa
+    # password: 
+    # PostgreSQL 配置
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/lab_db
+    username: postgres
+    password: 123456789 # 请确保在实际运行前替换为真实密码
+  sql:
+    init:
+      mode: always # 启动时自动执行 schema.sql
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印 SQL 日志

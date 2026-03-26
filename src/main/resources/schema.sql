@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS sys_user (
+    id BIGSERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL
+);
