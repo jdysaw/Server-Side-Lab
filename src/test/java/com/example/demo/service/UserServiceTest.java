@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.demo.common.Result;
 import com.example.demo.common.ResultCode;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.entity.User;
+import com.example.demo.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,8 +18,15 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Test
     public void testRegisterAndLogin() {
+        // 清理已有测试数据
+        userMapper.delete(new LambdaQueryWrapper<User>().eq(User::getUsername, "testuser"));
+        userMapper.delete(new LambdaQueryWrapper<User>().eq(User::getUsername, "nonexist"));
+
         // 1. 准备测试数据
         UserDTO userDTO = new UserDTO();
         userDTO.setUsername("testuser");
@@ -25,7 +35,7 @@ public class UserServiceTest {
         // 2. 测试注册
         Result<String> registerResult = userService.register(userDTO);
         assertEquals(200, registerResult.getCode());
-        assertEquals("注册成功", registerResult.getData());
+        assertEquals("注册成功!", registerResult.getData());
 
         // 3. 测试重复注册
         Result<String> duplicateRegisterResult = userService.register(userDTO);

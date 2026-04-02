@@ -21,4 +21,11 @@ public interface UserService {
      * @return 登录结果(包含 Token)
      */
     Result<String> login(UserDTO userDTO);
+
+    /**
+     * 根据 ID 获取用户信息
+     * @param id 用户 ID
+     * @return 用户信息
+     */
+    Result<String> getUserById(Long id);
 }
