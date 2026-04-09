@@ -63,4 +63,18 @@ public class UserController {
         int a = 1 / 0; // 故意触发算术异常
         return Result.success("这行代码不会执行");
     }
+
+    /**
+     * 分页查询用户列表
+     * 路径为 GET /api/users/page
+     *
+     * @param pageNum  当前页码
+     * @param pageSize 每页显示条数
+     * @return 用户分页列表
+     */
+    @GetMapping("/page")
+    public Result<Object> getUserPage(@RequestParam(defaultValue = "1") Integer pageNum,
+                                      @RequestParam(defaultValue = "5") Integer pageSize) {
+        return userService.getUserPage(pageNum, pageSize);
+    }
 }

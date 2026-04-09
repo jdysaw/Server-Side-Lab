@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
 import com.example.demo.common.ResultCode;
 import com.example.demo.dto.UserDTO;
@@ -86,5 +87,23 @@ public class UserServiceImpl implements UserService {
             return Result.error(ResultCode.USER_NOT_EXIST);
         }
         return Result.success("查询成功，用户名为: " + user.getUsername());
+    }
+
+    /**
+     * 获取用户分页数据
+     *
+     * @param pageNum  当前页码
+     * @param pageSize 每页显示条数
+     * @return 用户分页数据
+     */
+    @Override
+    public Result<Object> getUserPage(Integer pageNum, Integer pageSize) {
+        // 1. 创建分页对象（参数1：当前页码，参数2：每页显示条数）
+        Page<User> pageParam = new Page<>(pageNum, pageSize);
+        // 2. 执行分页查询（参数1：分页对象，参数2：查询条件Wrapper，这里传null代表全表）
+        // 框架会自动执行一条COUNT语句查总数，再拼接LIMIT执行分页
+        Page<User> resultPage = userMapper.selectPage(pageParam, null);
+        // 3. 返回结果（resultPage中包含了records数据列表、total总条数、pages总页数）
+        return Result.success(resultPage);
     }
 }
