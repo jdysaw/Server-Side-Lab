@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: demo
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
   datasource:
     # 暂时使用 H2 内存数据库进行测试 (如有需要可取消注释)
     # driver-class-name: org.h2.Driver

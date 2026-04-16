@@ -27,13 +27,17 @@ public class AuthInterceptor implements HandlerInterceptor {
         String uri = request.getRequestURI();
 
         // 2.手写细粒度放行规则
-        // 规则A:POST请求且路径精确等于"/api/users"，放行（注册）
+        // 规则 A:POST 请求且路径精确等于"/api/users"，放行（注册）
         boolean isCreateUser = "POST".equalsIgnoreCase(method) && "/api/users".equals(uri);
-        // 规则C:POST请求且路径精确等于"/api/users/login"，放行（登录）
+        // 规则 C:POST 请求且路径精确等于"/api/users/login"，放行（登录）
         boolean isLoginUser = "POST".equalsIgnoreCase(method) && "/api/users/login".equals(uri);
+        // 规则 D:GET 请求且路径包含"/api/users/"且以"/detail"结尾，放行（查询用户详情）
+        boolean isGetUserDetail = "GET".equalsIgnoreCase(method) && uri.matches(".*/api/users/\\d+/detail");
+        // 规则 E:GET 请求且路径精确等于"/api/users/{id}"，放行（查询用户）
+        boolean isGetUser = "GET".equalsIgnoreCase(method) && uri.matches(".*/api/users/\\d+");
 
-        // 满足合法公开规则直接放行，无需查验Token
-        if (isCreateUser || isLoginUser) {
+        // 满足合法公开规则直接放行，无需查验 Token
+        if (isCreateUser || isLoginUser || isGetUserDetail || isGetUser) {
             return true;
         }
 

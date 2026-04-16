@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.common.Result;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.UserInfoUpdateDTO;
 import com.example.demo.service.UserService;
+import com.example.demo.vo.UserDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,7 +76,44 @@ public class UserController {
      */
     @GetMapping("/page")
     public Result<Object> getUserPage(@RequestParam(defaultValue = "1") Integer pageNum,
-                                      @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = "5") Integer pageSize) {
         return userService.getUserPage(pageNum, pageSize);
+    }
+
+    /**
+     * 查询用户详情（多表联查 + Redis 缓存）
+     * 路径为 GET /api/users/{id}/detail
+     *
+     * @param userId 用户 ID
+     * @return 用户详情
+     */
+    @GetMapping("/{id}/detail")
+    public Result<UserDetailVO> getUserDetail(@PathVariable("id") Long userId) {
+        return userService.getUserDetail(userId);
+    }
+
+    /**
+     * 更新用户扩展信息
+     * 路径为 PUT /api/users/{id}/info
+     *
+     * @param userId 用户 ID
+     * @param dto    更新数据
+     * @return 更新结果
+     */
+    @PutMapping("/{id}/info")
+    public Result<String> updateUserInfo(@PathVariable("id") Long userId, @RequestBody UserInfoUpdateDTO dto) {
+        return userService.updateUserInfo(userId, dto);
+    }
+
+    /**
+     * 删除用户
+     * 路径为 DELETE /api/users/{id}
+     *
+     * @param userId 用户 ID
+     * @return 删除结果
+     */
+    @DeleteMapping("/{id}")
+    public Result<String> deleteUser(@PathVariable("id") Long userId) {
+        return userService.deleteUser(userId);
     }
 }
