@@ -11,6 +11,7 @@ import com.example.demo.entity.User;
 import com.example.demo.entity.UserInfo;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.mapper.UserInfoMapper;
+import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
 import com.example.demo.vo.UserDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.TimeUnit;
-import java.util.UUID;
 
 /**
  * 用户业务逻辑实现类
@@ -36,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     /**
      * Redis 缓存 Key 前缀
@@ -93,9 +96,9 @@ public class UserServiceImpl implements UserService {
             return Result.error(ResultCode.PASSWORD_ERROR);
         }
 
-        // 模拟生成 Token
-        String token = "Bearer " + UUID.randomUUID().toString().replace("-", "");
-        return Result.success(token);
+        // 使用 JWT 生成 Token
+        String jwt = jwtUtil.generateToken(userDTO.getUsername());
+        return Result.success(jwt);
     }
 
     /**
