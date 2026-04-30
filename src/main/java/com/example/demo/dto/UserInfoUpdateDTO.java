@@ -8,18 +8,18 @@ import lombok.Data;
  */
 @Data
 public class UserInfoUpdateDTO {
-  /**
-   * 真实姓名
-   */
-  private String realName;
+    /**
+     * 真实姓名
+     */
+    private String realName;
 
-  /**
-   * 手机号码
-   */
-  private String phone;
+    /**
+     * 手机号码
+     */
+    private String phone;
 
-  /**
-   * 联系地址
-   */
-  private String address;
+    /**
+     * 联系地址
+     */
+    private String address;
 }
